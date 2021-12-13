@@ -84,12 +84,14 @@ def calc_barato(valores):
 
 @app.route('/api/v1/cheapest/<entrada>')
 def hello_world(entrada):
-    strings = entrada.split(':')
-    tipo_cliente = strings[0]
-    datas = strings[1].split(',')
+    try:
+        strings = entrada.split(':')
+        tipo_cliente = strings[0]
+        datas = strings[1].split(',')
 
-    return jsonify( {"cheapest":  calc_barato(calc_valor( tipo_cliente, datas))})
-
+        return jsonify( {"cheapest":  calc_barato(calc_valor( tipo_cliente, datas))})
+    except:
+        return jsonify( {"Erro" : "Entrada inválida"} ), 400
 
 if __name__ == '__main__':
     app.run(debug=True)

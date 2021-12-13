@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 hoteis = [
@@ -83,11 +83,21 @@ def calc_barato(valores):
         
 
 @app.route('/api/v1/cheapest/<entrada>')
-def hello_world(entrada):
+def cheapest(entrada):
     try:
         strings = entrada.split(':')
         tipo_cliente = strings[0]
         datas = strings[1].split(',')
+
+        return jsonify( {"cheapest":  calc_barato(calc_valor( tipo_cliente, datas))})
+    except:
+        return jsonify( {"Erro" : "Entrada inválida"} ), 400
+
+@app.route('/api/v2/cheapest/')
+def cheapest2():
+    try:    
+        tipo_cliente = request.args.get('cliente') 
+        datas = request.args.get('datas')
 
         return jsonify( {"cheapest":  calc_barato(calc_valor( tipo_cliente, datas))})
     except:
